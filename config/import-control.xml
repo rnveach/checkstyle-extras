@@ -4,4 +4,75 @@
     "https://checkstyle.org/dtds/import_control_1_4.dtd">
 
 <import-control pkg="com.rnveach.tools.checkstyle.extras">
+
+  <allow pkg="com.puppycrawl.tools.checkstyle.api" />
+  <allow pkg="java.util" />
+
+  <subpackage name="asts">
+    <allow pkg="com.rnveach.tools.checkstyle.extras.utils" />
+    <allow pkg="org.antlr.v4.runtime" />
+  </subpackage>
+
+  <subpackage name="checks">
+    <allow class="com.puppycrawl.tools.checkstyle.utils.CommonUtil" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.asts" />
+  </subpackage>
+
+  <subpackage name="events">
+    <allow pkg="com.rnveach.tools.checkstyle.extras.asts" />
+  </subpackage>
+
+  <subpackage name="filters">
+    <allow pkg="com.rnveach.tools.checkstyle.extras.events" />
+  </subpackage>
+
+  <subpackage name="parsers">
+    <allow class="com.puppycrawl.tools.checkstyle.CheckstyleParserErrorStrategy" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.asts" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.grammars" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.visitors" />
+    <allow pkg="java.io" />
+    <allow class="java.nio.charset.StandardCharsets" />
+    <allow pkg="org.antlr.v4.runtime" />
+  </subpackage>
+
+  <subpackage name="printers">
+    <allow pkg="com.rnveach.tools.checkstyle.extras.asts" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.parsers" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.utils" />
+    <allow pkg="java.io" />
+  </subpackage>
+
+  <subpackage name="tokens">
+    <allow pkg="com.rnveach.tools.checkstyle.extras.grammars" />
+  </subpackage>
+
+  <subpackage name="utils">
+    <allow pkg="com.rnveach.tools.checkstyle.extras.asts" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.grammars" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.tokens" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.utils" />
+    <allow pkg="java.lang.reflect" />
+  </subpackage>
+
+  <subpackage name="visitors">
+    <allow pkg="org.antlr.v4.runtime" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.asts" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.grammars" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.tokens" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.utils" />
+  </subpackage>
+
+  <subpackage name="walkers">
+    <allow class="com.puppycrawl.tools.checkstyle.DefaultContext" />
+    <allow class="com.puppycrawl.tools.checkstyle.ModuleFactory" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.asts" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.checks" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.events" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.filters" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.parsers" />
+    <allow pkg="com.rnveach.tools.checkstyle.extras.utils" />
+    <allow pkg="java.io" />
+  </subpackage>
+
 </import-control>

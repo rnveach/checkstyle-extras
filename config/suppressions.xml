@@ -5,4 +5,10 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
+  <suppress files="[\\/]parsers[\\/]\w+Parser\.java" checks="ClassDataAbstractionCoupling" />
+
+  <suppress files="[\\/]visitors[\\/]\w+AstVisitor\.java" checks="LambdaBodyLength" />
+
+  <suppress files="[\\/]walkers[\\/]\w+Walker\.java" checks="GenericWhitespace"
+    message="'>'" />
 </suppressions>
