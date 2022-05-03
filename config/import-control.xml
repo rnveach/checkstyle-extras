@@ -15,7 +15,14 @@
 
   <subpackage name="checks">
     <allow class="com.puppycrawl.tools.checkstyle.utils.CommonUtil" />
+    <allow class="com.rnveach.tools.checkstyle.extras.utils.StringUtil" />
     <allow pkg="com.rnveach.tools.checkstyle.extras.asts" />
+
+    <subpackage name="xml">
+      <allow class="com.rnveach.tools.checkstyle.extras.checks.AbstractXmlCheck" />
+      <allow class="com.rnveach.tools.checkstyle.extras.utils.XmlAstUtil" />
+      <allow class="com.rnveach.tools.checkstyle.extras.tokens.XmlTokenTypes" />
+    </subpackage>
   </subpackage>
 
   <subpackage name="events">
@@ -48,11 +55,17 @@
   </subpackage>
 
   <subpackage name="utils">
+    <allow pkg="com.puppycrawl.tools.checkstyle.utils" />
     <allow pkg="com.rnveach.tools.checkstyle.extras.asts" />
     <allow pkg="com.rnveach.tools.checkstyle.extras.grammars" />
     <allow pkg="com.rnveach.tools.checkstyle.extras.tokens" />
     <allow pkg="com.rnveach.tools.checkstyle.extras.utils" />
     <allow pkg="java.lang.reflect" />
+
+    <allow class="com\.rnveach\.tools\.checkstyle\.extras\.checks\.Abstract\w+Check"
+      regex="true" />
+    <allow class="com\.rnveach\.tools\.checkstyle\.extras\.filters\.\w+WalkerFilter"
+      regex="true" />
   </subpackage>
 
   <subpackage name="visitors">

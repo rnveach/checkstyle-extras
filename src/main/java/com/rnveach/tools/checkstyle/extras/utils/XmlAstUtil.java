@@ -35,6 +35,9 @@ public final class XmlAstUtil {
     /** Maps from a token value to name. */
     private static final Map<Integer, String> TOKEN_VALUE_TO_NAME;
 
+    /** Array of all token IDs. */
+    private static final int[] TOKEN_IDS;
+
     /** Format for exception message when getting token by given id. */
     private static final String TOKEN_ID_EXCEPTION_FORMAT = "unknown TokenTypes id '%s'";
 
@@ -45,10 +48,23 @@ public final class XmlAstUtil {
     static {
         TOKEN_NAME_TO_VALUE = nameToValueMapFromPublicIntFields(XmlTokenTypes.class);
         TOKEN_VALUE_TO_NAME = invertMap(TOKEN_NAME_TO_VALUE);
+
+        TOKEN_IDS = TOKEN_NAME_TO_VALUE.values().stream().mapToInt(Integer::intValue).toArray();
     }
 
     /** Stop instances being created. **/
     private XmlAstUtil() {
+    }
+
+    /**
+     * Get all token IDs that are available in TokenTypes.
+     *
+     * @return array of token IDs
+     */
+    public static int[] getAllTokenIds() {
+        final int[] safeCopy = new int[TOKEN_IDS.length];
+        System.arraycopy(TOKEN_IDS, 0, safeCopy, 0, TOKEN_IDS.length);
+        return safeCopy;
     }
 
     /**

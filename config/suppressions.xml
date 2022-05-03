@@ -11,4 +11,9 @@
 
   <suppress files="[\\/]walkers[\\/]\w+Walker\.java" checks="GenericWhitespace"
     message="'>'" />
+
+  <!-- Indentation controlled by Eclipse. -->
+  <suppress checks="IndentationCheck" />
+  <!-- Not implementing languages yet. -->
+  <suppress checks="Translation" />
 </suppressions>

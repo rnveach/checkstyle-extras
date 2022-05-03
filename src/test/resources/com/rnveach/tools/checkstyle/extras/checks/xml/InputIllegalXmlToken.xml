@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<text>
+  <!-- comment -->
+  <element>hello world</element>
+  <selfCloseElement />
+  <cdata><![CDATA[<div> <p> Hello World </p> </div>]]></cdata>
+</text>

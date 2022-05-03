@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<text>
+  <element1>hello world</element1>
+  <element2 attribute="hello world">hello world</element2>
+</text>

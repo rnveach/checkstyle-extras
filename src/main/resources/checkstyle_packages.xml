@@ -6,6 +6,10 @@
 
 <checkstyle-packages>
   <package name="com.rnveach.tools.checkstyle.extras">
+    <package name="checks">
+      <package name="xml" />
+    </package>
+    <package name="filters" />
     <package name="walkers" />
   </package>
 </checkstyle-packages>
