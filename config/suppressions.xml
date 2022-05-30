@@ -14,6 +14,7 @@
 
   <!-- Indentation controlled by Eclipse. -->
   <suppress checks="IndentationCheck" />
+  <suppress checks="TrailingComment" />
   <!-- Not implementing languages yet. -->
   <suppress checks="Translation" />
 </suppressions>
