@@ -52,7 +52,8 @@ public final class XmlAstVisitor extends AbstractParseTreeVisitor<XmlAstImpl>
         }
         else {
             document = createImaginary(XmlTokenTypes.DOCUMENT);
-            processChildren(document, ctx.children);
+            // last child is 'EOF', we do not include this token in AST
+            processChildren(document, ctx.children.subList(0, ctx.children.size() - 1));
         }
         return document;
     }

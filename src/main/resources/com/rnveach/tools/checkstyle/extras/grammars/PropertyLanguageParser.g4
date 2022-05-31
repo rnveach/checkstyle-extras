@@ -61,14 +61,18 @@ options { tokenVocab=PropertyLanguageLexer; }
 
 // https://en.wikipedia.org/wiki/.properties
 
-file           : row* ;
+file           : row? (TERMINATOR row?)* EOF ;
 
-row            : (comment | decl) ;
+row            : comment | decl ;
 
-decl           : key '=' value? ;
+decl           : key assignment value? ;
 
 key            : TEXT ;
 
-value          : (TEXT | STRING) (CONTINUATION (TEXT | STRING))* ;
+assignment     : EQUALS | COLON ;
+
+value          : valueText (CONTINUATION valueText)* ;
+
+valueText      : (TEXT | assignment)+ | STRING ;
 
 comment        : COMMENT_BLOCK ;

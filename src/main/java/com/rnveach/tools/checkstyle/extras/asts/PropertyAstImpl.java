@@ -21,8 +21,6 @@ package com.rnveach.tools.checkstyle.extras.asts;
 
 import org.antlr.v4.runtime.Token;
 
-import com.rnveach.tools.checkstyle.extras.utils.PropertyAstUtil;
-
 /**
  * The implementation of {@link PropertyAST}. This should only be directly used
  * to create custom AST nodes and in 'PropertyAstVisitor.java'.
@@ -82,13 +80,7 @@ public final class PropertyAstImpl implements PropertyAST {
         int resultNo = -1;
 
         if (lineNo == NOT_INITIALIZED) {
-            // an inner AST that has been initialized
-            // with initialize(String text)
-            resultNo = findLineNo(firstChild);
-
-            if (resultNo == -1) {
-                resultNo = findLineNo(nextSibling);
-            }
+            resultNo = firstChild.getLineNo();
         }
         if (resultNo == -1) {
             resultNo = lineNo;
@@ -110,13 +102,7 @@ public final class PropertyAstImpl implements PropertyAST {
         int resultNo = -1;
 
         if (columnNo == NOT_INITIALIZED) {
-            // an inner AST that has been initialized
-            // with initialize(String text)
-            resultNo = findColumnNo(firstChild);
-
-            if (resultNo == -1) {
-                resultNo = findColumnNo(nextSibling);
-            }
+            resultNo = firstChild.getColumnNo();
         }
         if (resultNo == -1) {
             resultNo = columnNo;
@@ -347,50 +333,6 @@ public final class PropertyAstImpl implements PropertyAST {
         }
 
         return returnValue;
-    }
-
-    /**
-     * Finds line number in the first non-comment node.
-     *
-     * @param ast PropertyAST node.
-     * @return Line number if non-comment node exists, -1 otherwise.
-     */
-    private static int findLineNo(PropertyAST ast) {
-        int resultNo = -1;
-        PropertyAST node = ast;
-        while (node != null) {
-            // comment node can't be start of any java statement/definition
-            if (PropertyAstUtil.isCommentType(node.getType())) {
-                node = node.getNextSibling();
-            }
-            else {
-                resultNo = node.getLineNo();
-                break;
-            }
-        }
-        return resultNo;
-    }
-
-    /**
-     * Finds column number in the first non-comment node.
-     *
-     * @param ast PropertyAST node.
-     * @return Column number if non-comment node exists, -1 otherwise.
-     */
-    private static int findColumnNo(PropertyAST ast) {
-        int resultNo = -1;
-        PropertyAST node = ast;
-        while (node != null) {
-            // comment node can't be start of any java statement/definition
-            if (PropertyAstUtil.isCommentType(node.getType())) {
-                node = node.getNextSibling();
-            }
-            else {
-                resultNo = node.getColumnNo();
-                break;
-            }
-        }
-        return resultNo;
     }
 
     /**

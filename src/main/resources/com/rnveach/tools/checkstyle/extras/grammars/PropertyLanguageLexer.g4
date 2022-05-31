@@ -24,7 +24,7 @@ tokens {
     FILE,
     ROW,
     DECL,
-    KEY,VALUE,
+    KEY,ASSIGNMENT,VALUE,VALUE_TEXT,
     COMMENT
 }
 
@@ -47,14 +47,15 @@ import com.puppycrawl.tools.checkstyle.grammar.CrAwareLexerSimulator;
     }
 }
 
-EQUALS         :   '=' ;
+EQUALS         : '=' ;
+COLON          : ':' ;
 
-TEXT           : [a-zA-Z0-9 @:._/,%{}-]+ ;
+TEXT           : [a-zA-Z0-9 @._/,%{}-]+ ;
 
 STRING         : '"' ('""'|~'"')* '"' ; // quote-quote is an escaped quote
 
-COMMENT_BLOCK  : '#' ~ [\r\n]* ;
+COMMENT_BLOCK  : ('#' | '!') ~[\r\n]* ;
 
-TERMINATOR     : [\r\n]+ -> channel(HIDDEN) ;
+TERMINATOR     : [\r\n]+ ;
 
 CONTINUATION   : '\\' TERMINATOR ;

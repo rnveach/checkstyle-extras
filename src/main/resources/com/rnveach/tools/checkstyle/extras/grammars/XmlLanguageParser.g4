@@ -61,7 +61,7 @@ options { tokenVocab=XmlLanguageLexer; }
 
 // https://cs.lmu.edu/~ray/notes/xmlgrammar/
 
-document     :   prolog? misc* element misc* ;
+document     :   prolog? misc* element misc* EOF ;
 
 prolog       :   XML_DECL_OPEN attribute* XML_DECL_CLOSE ;
 

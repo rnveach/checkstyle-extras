@@ -43,14 +43,23 @@ public final class PropertyTokenTypes {
     /** Key. */
     public static final int KEY = PropertyLanguageLexer.KEY;
 
+    /** Assignment. */
+    public static final int ASSIGNMENT = PropertyLanguageLexer.ASSIGNMENT;
+
     /** Value. */
     public static final int VALUE = PropertyLanguageLexer.VALUE;
+
+    /** Value. */
+    public static final int VALUE_TEXT = PropertyLanguageLexer.VALUE_TEXT;
 
     /** Comment. */
     public static final int COMMENT = PropertyLanguageLexer.COMMENT;
 
     /** Equals. */
     public static final int EQUALS = PropertyLanguageLexer.EQUALS;
+
+    /** Colon. */
+    public static final int COLON = PropertyLanguageLexer.COLON;
 
     /** Text. */
     public static final int TEXT = PropertyLanguageLexer.TEXT;

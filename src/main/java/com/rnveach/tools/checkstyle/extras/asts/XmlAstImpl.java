@@ -21,8 +21,6 @@ package com.rnveach.tools.checkstyle.extras.asts;
 
 import org.antlr.v4.runtime.Token;
 
-import com.rnveach.tools.checkstyle.extras.utils.XmlAstUtil;
-
 /**
  * The implementation of {@link XmlAST}. This should only be directly used to
  * create custom AST nodes and in 'XmlAstVisitor.java'.
@@ -82,13 +80,7 @@ public final class XmlAstImpl implements XmlAST {
         int resultNo = -1;
 
         if (lineNo == NOT_INITIALIZED) {
-            // an inner AST that has been initialized
-            // with initialize(String text)
-            resultNo = findLineNo(firstChild);
-
-            if (resultNo == -1) {
-                resultNo = findLineNo(nextSibling);
-            }
+            resultNo = firstChild.getLineNo();
         }
         if (resultNo == -1) {
             resultNo = lineNo;
@@ -110,13 +102,7 @@ public final class XmlAstImpl implements XmlAST {
         int resultNo = -1;
 
         if (columnNo == NOT_INITIALIZED) {
-            // an inner AST that has been initialized
-            // with initialize(String text)
-            resultNo = findColumnNo(firstChild);
-
-            if (resultNo == -1) {
-                resultNo = findColumnNo(nextSibling);
-            }
+            resultNo = firstChild.getColumnNo();
         }
         if (resultNo == -1) {
             resultNo = columnNo;
@@ -347,50 +333,6 @@ public final class XmlAstImpl implements XmlAST {
         }
 
         return returnValue;
-    }
-
-    /**
-     * Finds line number in the first non-comment node.
-     *
-     * @param ast XmlAST node.
-     * @return Line number if non-comment node exists, -1 otherwise.
-     */
-    private static int findLineNo(XmlAST ast) {
-        int resultNo = -1;
-        XmlAST node = ast;
-        while (node != null) {
-            // comment node can't be start of any java statement/definition
-            if (XmlAstUtil.isCommentType(node.getType())) {
-                node = node.getNextSibling();
-            }
-            else {
-                resultNo = node.getLineNo();
-                break;
-            }
-        }
-        return resultNo;
-    }
-
-    /**
-     * Finds column number in the first non-comment node.
-     *
-     * @param ast XmlAST node.
-     * @return Column number if non-comment node exists, -1 otherwise.
-     */
-    private static int findColumnNo(XmlAST ast) {
-        int resultNo = -1;
-        XmlAST node = ast;
-        while (node != null) {
-            // comment node can't be start of any java statement/definition
-            if (XmlAstUtil.isCommentType(node.getType())) {
-                node = node.getNextSibling();
-            }
-            else {
-                resultNo = node.getColumnNo();
-                break;
-            }
-        }
-        return resultNo;
     }
 
     /**

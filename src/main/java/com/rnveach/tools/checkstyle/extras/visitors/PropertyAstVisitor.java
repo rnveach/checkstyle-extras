@@ -29,12 +29,14 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import com.rnveach.tools.checkstyle.extras.asts.PropertyAstImpl;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser;
+import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.AssignmentContext;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.CommentContext;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.DeclContext;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.FileContext;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.KeyContext;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.RowContext;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.ValueContext;
+import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.ValueTextContext;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParserVisitor;
 import com.rnveach.tools.checkstyle.extras.tokens.PropertyTokenTypes;
 import com.rnveach.tools.checkstyle.extras.utils.PropertyAstUtil;
@@ -49,13 +51,14 @@ public final class PropertyAstVisitor extends AbstractParseTreeVisitor<PropertyA
     @Override
     public PropertyAstImpl visitFile(FileContext ctx) {
         final PropertyAstImpl file;
-        final boolean isEmptyFile = ctx.children == null;
+        final boolean isEmptyFile = ctx.children.size() == 1;
         if (isEmptyFile) {
             file = null;
         }
         else {
             file = createImaginary(PropertyTokenTypes.FILE);
-            processChildren(file, ctx.children);
+            // last child is 'EOF', we do not include this token in AST
+            processChildren(file, ctx.children.subList(0, ctx.children.size() - 1));
         }
         return file;
     }
@@ -76,8 +79,18 @@ public final class PropertyAstVisitor extends AbstractParseTreeVisitor<PropertyA
     }
 
     @Override
+    public PropertyAstImpl visitAssignment(AssignmentContext ctx) {
+        return create(ctx, PropertyTokenTypes.ASSIGNMENT);
+    }
+
+    @Override
     public PropertyAstImpl visitValue(ValueContext ctx) {
         return create(ctx, PropertyTokenTypes.VALUE);
+    }
+
+    @Override
+    public PropertyAstImpl visitValueText(ValueTextContext ctx) {
+        return create(ctx, PropertyTokenTypes.VALUE_TEXT);
     }
 
     @Override
