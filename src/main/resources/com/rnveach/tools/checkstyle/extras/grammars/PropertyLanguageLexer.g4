@@ -53,6 +53,8 @@ EXCLAMATION    : '!' ;
 POUND          : '#' ;
 BACKSLASH      : '\\' ;
 
+DOUBLE_BACKSLASH : BACKSLASH BACKSLASH ;
+
 TEXT           : [a-zA-Z0-9 @._/,%{}-]+ ;
 
 STRING         : '"' ('""'|~'"')* '"' ; // quote-quote is an escaped quote
