@@ -63,11 +63,13 @@ options { tokenVocab=PropertyLanguageLexer; }
 
 file           : row? (TERMINATOR row?)* EOF ;
 
-row            : comment | decl ;
+row            : WS+
+                 | (WS* (comment | decl))
+               ;
 
 decl           : key assignment value? ;
 
-key            : TEXT ;
+key            : TEXT WS* ;
 
 assignment     : EQUALS | COLON ;
 
@@ -76,11 +78,13 @@ value          : valueText (continuation valueText)* ;
 valueText      : (
                   EXCLAMATION
                    | POUND
+                   | WS
                    | (BACKSLASH ~TERMINATOR)
                    | TEXT
                    | STRING
                    | assignment
-                 )+ ;
+                 )+
+               ;
 
 continuation   : BACKSLASH TERMINATOR ;
 

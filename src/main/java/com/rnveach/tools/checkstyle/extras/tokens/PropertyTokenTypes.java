@@ -70,6 +70,9 @@ public final class PropertyTokenTypes {
     /** Backlash. */
     public static final int BACKSLASH = PropertyLanguageLexer.BACKSLASH;
 
+    /** Whitespace. */
+    public static final int WS = PropertyLanguageLexer.WS;
+
     /** Text. */
     public static final int TEXT = PropertyLanguageLexer.TEXT;
 
