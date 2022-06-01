@@ -24,7 +24,7 @@ tokens {
     FILE,
     ROW,
     DECL,
-    KEY,ASSIGNMENT,VALUE,VALUE_TEXT,
+    KEY,ASSIGNMENT,VALUE,VALUE_TEXT,CONTINUATION,
     COMMENT
 }
 
@@ -53,8 +53,6 @@ EXCLAMATION    : '!' ;
 POUND          : '#' ;
 BACKSLASH      : '\\' ;
 
-DOUBLE_BACKSLASH : BACKSLASH BACKSLASH ;
-
 TEXT           : [a-zA-Z0-9 @._/,%{}-]+ ;
 
 STRING         : '"' ('""'|~'"')* '"' ; // quote-quote is an escaped quote
@@ -62,5 +60,3 @@ STRING         : '"' ('""'|~'"')* '"' ; // quote-quote is an escaped quote
 COMMENT_BLOCK  : ' '* (POUND | EXCLAMATION) ~[\r\n]* ;
 
 TERMINATOR     : [\r\n]+ ;
-
-CONTINUATION   : BACKSLASH TERMINATOR ;

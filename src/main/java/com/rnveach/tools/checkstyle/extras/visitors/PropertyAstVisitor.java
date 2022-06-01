@@ -31,6 +31,7 @@ import com.rnveach.tools.checkstyle.extras.asts.PropertyAstImpl;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.AssignmentContext;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.CommentContext;
+import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.ContinuationContext;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.DeclContext;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.FileContext;
 import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser.KeyContext;
@@ -91,6 +92,11 @@ public final class PropertyAstVisitor extends AbstractParseTreeVisitor<PropertyA
     @Override
     public PropertyAstImpl visitValueText(ValueTextContext ctx) {
         return create(ctx, PropertyTokenTypes.VALUE_TEXT);
+    }
+
+    @Override
+    public PropertyAstImpl visitContinuation(ContinuationContext ctx) {
+        return create(ctx, PropertyTokenTypes.CONTINUATION);
     }
 
     @Override

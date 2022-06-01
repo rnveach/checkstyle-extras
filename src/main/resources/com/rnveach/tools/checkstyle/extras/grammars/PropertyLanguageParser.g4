@@ -71,8 +71,17 @@ key            : TEXT ;
 
 assignment     : EQUALS | COLON ;
 
-value          : valueText (CONTINUATION valueText)* ;
+value          : valueText (continuation valueText)* ;
 
-valueText      : (EXCLAMATION | POUND | DOUBLE_BACKSLASH | (BACKSLASH ~TERMINATOR) | TEXT | STRING | assignment)+ ;
+valueText      : (
+                  EXCLAMATION
+                   | POUND
+                   | (BACKSLASH ~TERMINATOR)
+                   | TEXT
+                   | STRING
+                   | assignment
+                 )+ ;
+
+continuation   : BACKSLASH TERMINATOR ;
 
 comment        : COMMENT_BLOCK ;
