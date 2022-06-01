@@ -51,6 +51,7 @@ EQUALS         : '=' ;
 COLON          : ':' ;
 EXCLAMATION    : '!' ;
 POUND          : '#' ;
+BACKSLASH      : '\\' ;
 
 TEXT           : [a-zA-Z0-9 @._/,%{}-]+ ;
 
@@ -60,4 +61,4 @@ COMMENT_BLOCK  : ' '* (POUND | EXCLAMATION) ~[\r\n]* ;
 
 TERMINATOR     : [\r\n]+ ;
 
-CONTINUATION   : '\\' TERMINATOR ;
+CONTINUATION   : BACKSLASH TERMINATOR ;

@@ -67,6 +67,9 @@ public final class PropertyTokenTypes {
     /** Pound. */
     public static final int POUND = PropertyLanguageLexer.POUND;
 
+    /** Backlash. */
+    public static final int BACKSLASH = PropertyLanguageLexer.BACKSLASH;
+
     /** Text. */
     public static final int TEXT = PropertyLanguageLexer.TEXT;
 
