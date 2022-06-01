@@ -61,6 +61,12 @@ public final class PropertyTokenTypes {
     /** Colon. */
     public static final int COLON = PropertyLanguageLexer.COLON;
 
+    /** Exclamation. */
+    public static final int EXCLAMATION = PropertyLanguageLexer.EXCLAMATION;
+
+    /** Pound. */
+    public static final int POUND = PropertyLanguageLexer.POUND;
+
     /** Text. */
     public static final int TEXT = PropertyLanguageLexer.TEXT;
 

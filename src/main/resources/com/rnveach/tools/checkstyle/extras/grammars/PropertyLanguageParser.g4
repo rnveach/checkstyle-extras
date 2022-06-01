@@ -73,6 +73,6 @@ assignment     : EQUALS | COLON ;
 
 value          : valueText (CONTINUATION valueText)* ;
 
-valueText      : (TEXT | assignment)+ | STRING ;
+valueText      : (EXCLAMATION | POUND | TEXT | STRING | assignment)+ ;
 
 comment        : COMMENT_BLOCK ;

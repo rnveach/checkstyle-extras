@@ -49,12 +49,14 @@ import com.puppycrawl.tools.checkstyle.grammar.CrAwareLexerSimulator;
 
 EQUALS         : '=' ;
 COLON          : ':' ;
+EXCLAMATION    : '!' ;
+POUND          : '#' ;
 
 TEXT           : [a-zA-Z0-9 @._/,%{}-]+ ;
 
 STRING         : '"' ('""'|~'"')* '"' ; // quote-quote is an escaped quote
 
-COMMENT_BLOCK  : ('#' | '!') ~[\r\n]* ;
+COMMENT_BLOCK  : ' '* (POUND | EXCLAMATION) ~[\r\n]* ;
 
 TERMINATOR     : [\r\n]+ ;
 
