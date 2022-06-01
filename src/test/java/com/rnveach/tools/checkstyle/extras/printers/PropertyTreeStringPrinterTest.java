@@ -41,6 +41,12 @@ public class PropertyTreeStringPrinterTest extends AbstractTreeTestSupport {
     }
 
     @Test
+    public void testWhitespace() throws Exception {
+        verifyPropertyAst(getPath("ExpectedWhitespaceProperty.txt"),
+                getPath("InputWhitespace.properties"));
+    }
+
+    @Test
     public void testComments() throws Exception {
         verifyPropertyAst(getPath("ExpectedCommentsProperty.txt"),
                 getPath("InputComments.properties"));

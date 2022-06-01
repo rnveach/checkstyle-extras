@@ -57,6 +57,6 @@ TEXT           : [a-zA-Z0-9 @._/,%{}-]+ ;
 
 STRING         : '"' ('""'|~'"')* '"' ; // quote-quote is an escaped quote
 
-COMMENT_BLOCK  : ' '* (POUND | EXCLAMATION) ~[\r\n]* ;
+COMMENT_BLOCK  : [ \t]* (POUND | EXCLAMATION) ~[\r\n]* ;
 
 TERMINATOR     : [\r\n]+ ;
