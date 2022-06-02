@@ -88,4 +88,4 @@ valueText      : (
 
 continuation   : BACKSLASH TERMINATOR ;
 
-comment        : COMMENT_BLOCK ;
+comment        : POUND | EXCLAMATION | COMMENT_BLOCK ;
