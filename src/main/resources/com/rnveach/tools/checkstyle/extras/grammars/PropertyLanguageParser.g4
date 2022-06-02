@@ -61,17 +61,18 @@ options { tokenVocab=PropertyLanguageLexer; }
 
 // https://en.wikipedia.org/wiki/.properties
 
-file           : row? (TERMINATOR row?)* EOF ;
+file           : row? (row)* EOF ;
 
-row            : WS+
-                 | (WS* (comment | decl))
+row            : ( comment | decl | WS+ | TERMINATOR )
                ;
 
-decl           : key assignment value? ;
+comment        : COMMENT_START COMMENT_CONTENT? COMMENT_END;
 
-key            : TEXT WS* ;
+decl           : WS? key assignment? value? TERMINATOR?;
 
-assignment     : EQUALS | COLON ;
+key            : TEXT WS? ;
+
+assignment     : EQUALS | COLON | WS;
 
 value          : valueText (continuation valueText)* ;
 
@@ -87,5 +88,3 @@ valueText      : (
                ;
 
 continuation   : BACKSLASH TERMINATOR ;
-
-comment        : POUND | EXCLAMATION | COMMENT_BLOCK ;
