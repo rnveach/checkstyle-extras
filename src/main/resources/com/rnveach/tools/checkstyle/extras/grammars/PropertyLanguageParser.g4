@@ -66,7 +66,7 @@ file           : row? (row)* EOF ;
 row            : ( comment | decl | WS+ | TERMINATOR )
                ;
 
-comment        : COMMENT_START COMMENT_CONTENT? COMMENT_END;
+comment        : COMMENT_START COMMENT_CONTENT?;
 
 decl           : WS? key assignment? value? TERMINATOR?;
 

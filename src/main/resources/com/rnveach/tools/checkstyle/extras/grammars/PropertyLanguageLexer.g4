@@ -68,5 +68,4 @@ STRING         : '"' ('""'|~'"')* '"' ; // quote-quote is an escaped quote
 TERMINATOR     : [\r\n]+ ;
 
 mode CommentMode;
-    COMMENT_CONTENT: ( [a-zA-Z0-9@._/,%{}-] | '#' | '!' | WS )+ ;
-    COMMENT_END: ( [\r\n] | EOF ) -> popMode;
+    COMMENT_CONTENT: ( [a-zA-Z0-9@._/,%{}-] | '#' | '!' | WS )+ ~[\r\n] -> popMode;
