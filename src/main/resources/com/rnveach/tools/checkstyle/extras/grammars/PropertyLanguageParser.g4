@@ -67,19 +67,13 @@ row            : WS+
                  | (WS* (comment | decl))
                ;
 
-decl           : key
-                 (
-                   assignment value?
-                   | WS nonAssignmentValue
-                 )?
-               ;
+decl           : key assignment value? ;
 
 key            : TEXT WS* ;
 
 assignment     : EQUALS | COLON ;
 
 value          : valueText (continuation valueText)* ;
-nonAssignmentValue  : ~(WS | TERMINATOR) value?;
 
 valueText      : (
                   EXCLAMATION

@@ -19,7 +19,7 @@ public class PrintProperty {
 
     public static void printProperties(Properties prop) {
         for (Object key : prop.keySet()) {
-            System.out.println("'" + key + "'" + ": '" + prop.getProperty(key.toString()) + "'");
+            System.out.println(key + ": " + prop.getProperty(key.toString()));
         }
     }
 

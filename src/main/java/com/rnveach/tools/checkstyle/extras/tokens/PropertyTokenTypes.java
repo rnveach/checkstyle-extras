@@ -50,9 +50,6 @@ public final class PropertyTokenTypes {
     public static final int VALUE = PropertyLanguageLexer.VALUE;
 
     /** Value. */
-    public static final int NON_ASSIGNMENT_VALUE = PropertyLanguageLexer.NON_ASSIGNMENT_VALUE;
-
-    /** Value. */
     public static final int VALUE_TEXT = PropertyLanguageLexer.VALUE_TEXT;
 
     /** Comment. */
