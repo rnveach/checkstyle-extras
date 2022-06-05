@@ -363,4 +363,5 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
                                 Comparator.nullsLast(Comparator.naturalOrder()))
                         .thenComparing(AbstractXmlCheck::hashCode));
     }
+
 }

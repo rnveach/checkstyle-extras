@@ -42,6 +42,7 @@ import com.rnveach.tools.checkstyle.extras.visitors.XmlAstVisitor;
 
 /** Helper methods to parse XML source files. */
 public final class XmlParser {
+
     /** Stop instances being created. **/
     private XmlParser() {
     }

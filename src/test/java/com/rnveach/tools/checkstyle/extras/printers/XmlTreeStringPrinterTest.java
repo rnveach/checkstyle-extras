@@ -32,7 +32,7 @@ public class XmlTreeStringPrinterTest extends AbstractTreeTestSupport {
 
     @Test
     public void testParseFile() throws Exception {
-        verifyAst(getPath("Expected.txt"), getPath("Input.xml"));
+        verifyXmlAst(getPath("ExpectedXml.txt"), getPath("Input.xml"));
     }
 
 }
