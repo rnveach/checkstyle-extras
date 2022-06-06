@@ -61,16 +61,79 @@ options { tokenVocab=XmlLanguageLexer; }
 
 // https://cs.lmu.edu/~ray/notes/xmlgrammar/
 
-document     :   prolog? misc* element misc* EOF ;
+document     : prolog element misc* EOF ;
 
-prolog       :   XML_DECL_OPEN attribute* XML_DECL_CLOSE ;
+prolog       : xmlDecl? misc* (doctypedecl misc*)? ;
 
-content      :   chardata?
-                ((element | reference | CDATA | PI | COMMENT) chardata?)* ;
+xmlDecl      : DECL_OPEN attribute* DECL_CLOSE ;
 
-element      :   startElement endElement
-             |   startElement content endElement
-             |   emptyElement
+doctypedecl  : DOCTYPE_OPEN NAME externalID? ('[' intSubset ']')? CLOSE ;
+
+externalID   : 'SYSTEM' STRING
+                | 'PUBLIC' STRING STRING?
+             ;
+
+intSubset    : (markupDecl | declSep)* ;
+
+markupDecl   : elementDecl | attListDecl | entityDecl | notationDecl |  PI | COMMENT ;
+
+declSep      : PE_REF ;
+
+elementDecl  : '<!ELEMENT' NAME contentSpec '>' ;
+
+contentSpec  : 'EMPTY' | 'ANY' | mixed | children ;
+
+children     : (choice | seq) ('?' | '*' | '+')? ;
+
+choice       : '(' cp ( '|' cp )+ ')' ;
+seq          : '(' cp ( ',' cp )* ')' ;
+
+cp           : (NAME | choice | seq) ('?' | '*' | '+')? ;
+
+mixed        : '(' '#PCDATA' ('|' NAME)* ')*'
+               | '(' '#PCDATA' ')' ;
+
+attListDecl  : '<!ATTLIST' NAME attDef* '>' ;
+attDef       : NAME attType defaultDecl  ;
+attType      : stringType | tokenizedType | enumeratedType  ;
+stringType   : 'CDATA' ;
+tokenizedType: 'ID' | 'IDREF' | 'IDREFS' | 'ENTITY'
+                    |  'ENTITIES' | 'NMTOKEN' | 'NMTOKENS'
+              ;
+enumeratedType: notationType | enumeration ;
+notationType  : 'NOTATION' '(' NAME ('|' NAME)* ')' ;
+enumeration   : '(' NameChar+ ('|' NameChar+)* ')' ;
+defaultDecl   : '#REQUIRED' | '#IMPLIED' | ('#FIXED'? attValue) ;
+
+
+entityDecl   : geDecl | peDecl ;
+
+geDecl       : '<!ENTITY' NAME entityDef '>' ;
+
+peDecl       : '<!ENTITY' '%' NAME peDef '>' ;
+
+entityDef    : entityValue | (externalID nDataDecl?) ;
+
+peDef        : entityValue | externalID ;
+
+entityValue  : '"' ([^%&"] | PE_REF | reference)* '"'
+               |  '\'' ([^%&'] | PE_REF | reference)* '\''
+             ;
+
+attValue     : '"' (reference)* '"'
+               | '\'' (reference)* '\''
+             ;
+
+nDataDecl    : 'NDATA' NAME ;
+
+notationDecl : '<!NOTATION' NAME externalID '>' ;
+
+content      : chardata?
+               ((element | reference | CDATA | PI | COMMENT) chardata?)* ;
+
+element      : startElement endElement
+               | startElement content endElement
+               | emptyElement
              ;
 
 startElement : '<' NAME attribute* '>' ;
@@ -79,14 +142,14 @@ endElement   : '<' '/' NAME '>' ;
 
 emptyElement : '<' NAME attribute* '/>' ;
 
-reference    :   ENTITY_REF | CHAR_REF ;
+reference    : ENTITY_REF | CHAR_REF ;
 
-attribute    :   NAME '=' STRING ;
+attribute    : NAME '=' STRING ;
 
 //
 // All text that is not markup constitutes the character data of the document.
 //
 
-chardata     :   TEXT | SEA_WS ;
+chardata     : TEXT | SEA_WS ;
 
-misc         :   COMMENT | PI | SEA_WS ;
+misc         : COMMENT | PI | SEA_WS ;
