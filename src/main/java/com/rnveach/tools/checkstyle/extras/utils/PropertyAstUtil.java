@@ -26,10 +26,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.rnveach.tools.checkstyle.extras.tokens.XmlTokenTypes;
+import com.rnveach.tools.checkstyle.extras.tokens.PropertyTokenTypes;
 
-/** Contains utility methods for XML ASTs. */
-public final class XmlAstUtil {
+/** Contains utility methods for property ASTs. */
+public final class PropertyAstUtil {
 
     /** Maps from a token name to value. */
     private static final Map<String, Integer> TOKEN_NAME_TO_VALUE;
@@ -47,14 +47,14 @@ public final class XmlAstUtil {
 
     // initialise the constants
     static {
-        TOKEN_NAME_TO_VALUE = nameToValueMapFromPublicIntFields(XmlTokenTypes.class);
+        TOKEN_NAME_TO_VALUE = nameToValueMapFromPublicIntFields(PropertyTokenTypes.class);
         TOKEN_VALUE_TO_NAME = invertMap(TOKEN_NAME_TO_VALUE);
 
         TOKEN_IDS = TOKEN_NAME_TO_VALUE.values().stream().mapToInt(Integer::intValue).toArray();
     }
 
     /** Stop instances being created. **/
-    private XmlAstUtil() {
+    private PropertyAstUtil() {
     }
 
     /**
@@ -107,7 +107,7 @@ public final class XmlAstUtil {
      * @return true if type is comment-related type.
      */
     public static boolean isCommentType(int type) {
-        return type == XmlTokenTypes.COMMENT;
+        return type == PropertyTokenTypes.COMMENT;
     }
 
     /**

@@ -22,10 +22,10 @@ package com.rnveach.tools.checkstyle.extras.asts;
 import org.antlr.v4.runtime.Token;
 
 /**
- * The implementation of {@link XmlAST}. This should only be directly used to
- * create custom AST nodes and in 'XmlAstVisitor.java'.
+ * The implementation of {@link PropertyAST}. This should only be directly used
+ * to create custom AST nodes and in 'PropertyAstVisitor.java'.
  */
-public final class XmlAstImpl implements XmlAST {
+public final class PropertyAstImpl implements PropertyAST {
 
     /** Constant to indicate if not calculated the child count. */
     private static final int NOT_INITIALIZED = Integer.MIN_VALUE;
@@ -34,29 +34,29 @@ public final class XmlAstImpl implements XmlAST {
     private int lineNo = NOT_INITIALIZED;
     /** The column number. **/
     private int columnNo = NOT_INITIALIZED;
-    /** The type of this XmlAST. */
+    /** The type of this PropertyAST. */
     private int type;
-    /** Text of this XmlAST. */
+    /** Text of this PropertyAST. */
     private String text;
 
     /** Number of children. */
     private int childCount = NOT_INITIALIZED;
 
-    /** First sibling of this XmlAST. */
-    private XmlAstImpl nextSibling;
+    /** First sibling of this PropertyAST. */
+    private PropertyAstImpl nextSibling;
     /** Previous sibling. */
-    private XmlAstImpl previousSibling;
+    private PropertyAstImpl previousSibling;
 
-    /** First child of this XmlAST. */
-    private XmlAstImpl firstChild;
+    /** First child of this PropertyAST. */
+    private PropertyAstImpl firstChild;
     /** The parent token. */
-    private XmlAstImpl parent;
+    private PropertyAstImpl parent;
 
     /**
-     * Initializes this XmlAstImpl.
+     * Initializes this PropertyAstImpl.
      *
-     * @param tokenType the type of this XmlAstImpl
-     * @param tokenText the text of this XmlAstImpl
+     * @param tokenType the type of this PropertyAstImpl
+     * @param tokenText the text of this PropertyAstImpl
      */
     public void initialize(int tokenType, String tokenText) {
         type = tokenType;
@@ -64,9 +64,9 @@ public final class XmlAstImpl implements XmlAST {
     }
 
     /**
-     * Initializes this XmlAstImpl.
+     * Initializes this PropertyAstImpl.
      *
-     * @param token the token to generate this XmlAstImpl from
+     * @param token the token to generate this PropertyAstImpl from
      */
     public void initialize(Token token) {
         lineNo = token.getLine();
@@ -127,7 +127,7 @@ public final class XmlAstImpl implements XmlAST {
     /**
      * Sets the type of this AST.
      *
-     * @param type the token type of this XmlAstImpl
+     * @param type the token type of this PropertyAstImpl
      */
     public void setType(int type) {
         this.type = type;
@@ -139,9 +139,9 @@ public final class XmlAstImpl implements XmlAST {
     }
 
     /**
-     * Sets the text for this XmlAstImpl.
+     * Sets the text for this PropertyAstImpl.
      *
-     * @param text the text field of this XmlAstImpl
+     * @param text the text field of this PropertyAstImpl
      */
     public void setText(String text) {
         this.text = text;
@@ -150,14 +150,14 @@ public final class XmlAstImpl implements XmlAST {
     /**
      * Add next sibling, pushes other siblings back.
      *
-     * @param ast XmlAST object.
+     * @param ast PropertyAST object.
      */
-    public void addNextSibling(XmlAST ast) {
+    public void addNextSibling(PropertyAST ast) {
         clearChildCountCache(parent);
         if (ast != null) {
             // parent is set in setNextSibling
-            final XmlAstImpl sibling = nextSibling;
-            final XmlAstImpl astImpl = (XmlAstImpl) ast;
+            final PropertyAstImpl sibling = nextSibling;
+            final PropertyAstImpl astImpl = (PropertyAstImpl) ast;
 
             if (sibling != null) {
                 astImpl.setNextSibling(sibling);
@@ -172,35 +172,35 @@ public final class XmlAstImpl implements XmlAST {
     /**
      * Sets the next sibling of this AST.
      *
-     * @param nextSibling the XmlAST to set as sibling
+     * @param nextSibling the PropertyAST to set as sibling
      */
-    public void setNextSibling(XmlAST nextSibling) {
+    public void setNextSibling(PropertyAST nextSibling) {
         clearChildCountCache(parent);
-        this.nextSibling = (XmlAstImpl) nextSibling;
+        this.nextSibling = (PropertyAstImpl) nextSibling;
         if (nextSibling != null && parent != null) {
-            ((XmlAstImpl) nextSibling).setParent(parent);
+            ((PropertyAstImpl) nextSibling).setParent(parent);
         }
         if (nextSibling != null) {
-            ((XmlAstImpl) nextSibling).previousSibling = this;
+            ((PropertyAstImpl) nextSibling).previousSibling = this;
         }
     }
 
     @Override
-    public XmlAstImpl getNextSibling() {
+    public PropertyAstImpl getNextSibling() {
         return nextSibling;
     }
 
     /**
      * Add previous sibling.
      *
-     * @param ast XmlAST object.
+     * @param ast PropertyAST object.
      */
-    public void addPreviousSibling(XmlAST ast) {
+    public void addPreviousSibling(PropertyAST ast) {
         clearChildCountCache(parent);
         if (ast != null) {
             // parent is set in setNextSibling or parent.setFirstChild
-            final XmlAstImpl previousSiblingNode = previousSibling;
-            final XmlAstImpl astImpl = (XmlAstImpl) ast;
+            final PropertyAstImpl previousSiblingNode = previousSibling;
+            final PropertyAstImpl astImpl = (PropertyAstImpl) ast;
 
             if (previousSiblingNode != null) {
                 astImpl.previousSibling = previousSiblingNode;
@@ -216,45 +216,61 @@ public final class XmlAstImpl implements XmlAST {
     }
 
     @Override
-    public XmlAST getPreviousSibling() {
+    public PropertyAST getPreviousSibling() {
         return previousSibling;
     }
 
     /**
      * Adds a new child to the current AST.
      *
-     * @param child to XmlAST to add as child
+     * @param child PropertyAST to add as child
      */
-    public void addChild(XmlAST child) {
+    public void addChild(PropertyAST child) {
         clearChildCountCache(this);
         if (child != null) {
-            final XmlAstImpl astImpl = (XmlAstImpl) child;
+            final PropertyAstImpl astImpl = (PropertyAstImpl) child;
             astImpl.setParent(this);
-            astImpl.previousSibling = (XmlAstImpl) getLastChild();
+            astImpl.previousSibling = (PropertyAstImpl) getLastChild();
         }
-        XmlAST temp = firstChild;
+        PropertyAST temp = firstChild;
         if (temp == null) {
-            firstChild = (XmlAstImpl) child;
+            firstChild = (PropertyAstImpl) child;
         }
         else {
             while (temp.getNextSibling() != null) {
                 temp = temp.getNextSibling();
             }
 
-            ((XmlAstImpl) temp).setNextSibling(child);
+            ((PropertyAstImpl) temp).setNextSibling(child);
         }
+    }
+
+    /**
+     * Removes a child from the current AST.
+     *
+     * @param child PropertyAST to remove as child
+     */
+    public void removeChild(PropertyAST child) {
+        clearChildCountCache(this);
+        if (firstChild == child) {
+            firstChild = (PropertyAstImpl) child.getNextSibling();
+        }
+        else {
+            ((PropertyAstImpl) child.getPreviousSibling()).setNextSibling(child.getNextSibling());
+        }
+
     }
 
     /**
      * Sets the first child of this AST.
      *
-     * @param firstChild the XmlAST to set as first child
+     * @param firstChild the PropertyAST to set as first child
      */
-    public void setFirstChild(XmlAST firstChild) {
+    public void setFirstChild(PropertyAST firstChild) {
         clearChildCountCache(this);
-        this.firstChild = (XmlAstImpl) firstChild;
+        this.firstChild = (PropertyAstImpl) firstChild;
         if (firstChild != null) {
-            ((XmlAstImpl) firstChild).setParent(this);
+            ((PropertyAstImpl) firstChild).setParent(this);
         }
     }
 
@@ -268,7 +284,7 @@ public final class XmlAstImpl implements XmlAST {
         // lazy init
         if (childCount == NOT_INITIALIZED) {
             childCount = 0;
-            XmlAST child = firstChild;
+            PropertyAST child = firstChild;
 
             while (child != null) {
                 childCount += 1;
@@ -281,7 +297,7 @@ public final class XmlAstImpl implements XmlAST {
     @Override
     public int getChildCount(int tokenType) {
         int count = 0;
-        for (XmlAST ast = firstChild; ast != null; ast = ast.getNextSibling()) {
+        for (PropertyAST ast = firstChild; ast != null; ast = ast.getNextSibling()) {
             if (ast.getType() == tokenType) {
                 count++;
             }
@@ -290,13 +306,13 @@ public final class XmlAstImpl implements XmlAST {
     }
 
     @Override
-    public XmlAstImpl getFirstChild() {
+    public PropertyAstImpl getFirstChild() {
         return firstChild;
     }
 
     @Override
-    public XmlAST getLastChild() {
-        XmlAstImpl ast = firstChild;
+    public PropertyAST getLastChild() {
+        PropertyAstImpl ast = firstChild;
         while (ast != null && ast.nextSibling != null) {
             ast = ast.nextSibling;
         }
@@ -304,7 +320,7 @@ public final class XmlAstImpl implements XmlAST {
     }
 
     @Override
-    public XmlAST getParent() {
+    public PropertyAST getParent() {
         return parent;
     }
 
@@ -313,8 +329,8 @@ public final class XmlAstImpl implements XmlAST {
      *
      * @param parent the parent token
      */
-    private void setParent(XmlAstImpl parent) {
-        XmlAstImpl instance = this;
+    private void setParent(PropertyAstImpl parent) {
+        PropertyAstImpl instance = this;
         do {
             instance.parent = parent;
             instance = instance.nextSibling;
@@ -322,10 +338,10 @@ public final class XmlAstImpl implements XmlAST {
     }
 
     @Override
-    public XmlAST findFirst(int findType) {
-        XmlAST returnValue = null;
+    public PropertyAST findFirst(int findType) {
+        PropertyAST returnValue = null;
 
-        for (XmlAST ast = firstChild; ast != null; ast = ast.getNextSibling()) {
+        for (PropertyAST ast = firstChild; ast != null; ast = ast.getNextSibling()) {
             if (ast.getType() == findType) {
                 returnValue = ast;
                 break;
@@ -340,7 +356,7 @@ public final class XmlAstImpl implements XmlAST {
      *
      * @param ast The ast to clear.
      */
-    private static void clearChildCountCache(XmlAstImpl ast) {
+    private static void clearChildCountCache(PropertyAstImpl ast) {
         if (ast != null) {
             ast.childCount = NOT_INITIALIZED;
         }

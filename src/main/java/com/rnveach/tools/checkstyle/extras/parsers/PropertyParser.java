@@ -35,41 +35,42 @@ import com.puppycrawl.tools.checkstyle.CheckstyleParserErrorStrategy;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileText;
-import com.rnveach.tools.checkstyle.extras.asts.XmlAST;
-import com.rnveach.tools.checkstyle.extras.grammars.XmlLanguageLexer;
-import com.rnveach.tools.checkstyle.extras.grammars.XmlLanguageParser;
-import com.rnveach.tools.checkstyle.extras.visitors.XmlAstVisitor;
+import com.rnveach.tools.checkstyle.extras.asts.PropertyAST;
+import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageLexer;
+import com.rnveach.tools.checkstyle.extras.grammars.PropertyLanguageParser;
+import com.rnveach.tools.checkstyle.extras.visitors.PropertyAstVisitor;
 
-/** Helper methods to parse XML source files. */
-public final class XmlParser {
+/** Helper methods to parse property source files. */
+public final class PropertyParser {
 
     /** Stop instances being created. **/
-    private XmlParser() {
+    private PropertyParser() {
     }
 
     /**
-     * Static helper method to parses a XML source file.
+     * Static helper method to parses a property source file.
      *
      * @param contents contains the contents of the file
      * @return the root of the AST
-     * @throws CheckstyleException if the contents is not a valid XML source
+     * @throws CheckstyleException if the contents is not a valid property
+     *         source
      */
-    public static XmlAST parse(FileContents contents) throws CheckstyleException {
+    public static PropertyAST parse(FileContents contents) throws CheckstyleException {
         final String fullText = contents.getText().getFullText().toString();
         final CharStream codePointCharStream = CharStreams.fromString(fullText);
-        final XmlLanguageLexer lexer = new XmlLanguageLexer(codePointCharStream, true);
+        final PropertyLanguageLexer lexer = new PropertyLanguageLexer(codePointCharStream, true);
         lexer.removeErrorListeners();
 
         final CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        final XmlLanguageParser parser = new XmlLanguageParser(tokenStream,
-                XmlLanguageParser.CLEAR_DFA_LIMIT);
+        final PropertyLanguageParser parser = new PropertyLanguageParser(tokenStream,
+                PropertyLanguageParser.CLEAR_DFA_LIMIT);
         parser.setErrorHandler(new CheckstyleParserErrorStrategy());
         parser.removeErrorListeners();
         parser.addErrorListener(new CheckstyleErrorListener());
 
-        final XmlLanguageParser.DocumentContext document;
+        final PropertyLanguageParser.FileContext file;
         try {
-            document = parser.document();
+            file = parser.file();
         }
         catch (IllegalStateException ex) {
             final String exceptionMsg = String.format(Locale.ROOT,
@@ -78,7 +79,7 @@ public final class XmlParser {
             throw new CheckstyleException(exceptionMsg, ex);
         }
 
-        return new XmlAstVisitor().visit(document);
+        return new PropertyAstVisitor().visit(file);
     }
 
     /**
@@ -86,24 +87,25 @@ public final class XmlParser {
      *
      * @param text the text to parse
      * @return the root node of the parse tree
-     * @throws CheckstyleException if the text is not a valid XML source
+     * @throws CheckstyleException if the text is not a valid property source
      */
-    public static XmlAST parseFileText(FileText text) throws CheckstyleException {
+    public static PropertyAST parseFileText(FileText text) throws CheckstyleException {
         final FileContents contents = new FileContents(text);
-        final XmlAST ast = parse(contents);
+        final PropertyAST ast = parse(contents);
 
         return ast;
     }
 
     /**
-     * Parses XML source file.
+     * Parses property source file.
      *
      * @param file the file to parse
-     * @return XmlAST tree
+     * @return PropertyAST tree
      * @throws IOException if the file could not be read
-     * @throws CheckstyleException if the file is not a valid XML source file
+     * @throws CheckstyleException if the file is not a valid property source
+     *         file
      */
-    public static XmlAST parseFile(File file) throws IOException, CheckstyleException {
+    public static PropertyAST parseFile(File file) throws IOException, CheckstyleException {
         final FileText text = new FileText(file.getAbsoluteFile(), StandardCharsets.UTF_8.name());
 
         return parseFileText(text);

@@ -17,9 +17,9 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-parser grammar XmlLanguageParser;
+parser grammar PropertyLanguageParser;
 
-options { tokenVocab=XmlLanguageLexer; }
+options { tokenVocab=PropertyLanguageLexer; }
 
 @parser::members {
 
@@ -28,7 +28,7 @@ options { tokenVocab=XmlLanguageLexer; }
      * DFA states. This number can have a significant impact on performance;
      * we have found 500 files to be a good balance between parser speed and
      * memory usage. This field must be public in order to be accessed and
-     * used for {@link XmlLanguageParser#XmlLanguageParser(TokenStream, int)}
+     * used for {@link PropertyLanguageParser#PropertyLanguageParser(TokenStream, int)}
      * generated constructor.
      */
     public static final int CLEAR_DFA_LIMIT = 500;
@@ -37,7 +37,7 @@ options { tokenVocab=XmlLanguageLexer; }
 
     /**
      * We create a custom constructor so that we can clear the DFA
-     * states upon instantiation of XmlLanguageParser.
+     * states upon instantiation of PropertyLanguageParser.
      *
      * @param input the token stream to parse
      * @param clearDfaLimit this is the number of files to parse before clearing
@@ -48,7 +48,7 @@ options { tokenVocab=XmlLanguageLexer; }
      *         have a negative effect on memory usage from higher garbage collector
      *         activity.
      */
-    public XmlLanguageParser(TokenStream input, int clearDfaLimit) {
+    public PropertyLanguageParser(TokenStream input, int clearDfaLimit) {
         super(input);
         _interp = new ParserATNSimulator(this, _ATN , _decisionToDFA, _sharedContextCache);
         fileCounter++;
@@ -59,34 +59,69 @@ options { tokenVocab=XmlLanguageLexer; }
     }
 }
 
-// https://cs.lmu.edu/~ray/notes/xmlgrammar/
+// https://en.wikipedia.org/wiki/.properties
 
-document     :   prolog? misc* element misc* EOF ;
+file           : row? (TERMINATOR row?)* EOF ;
 
-prolog       :   XML_DECL_OPEN attribute* XML_DECL_CLOSE ;
+row            : WS
+                 | (WS? (comment | spaceDecl | decl))
+               ;
 
-content      :   chardata?
-                ((element | reference | CDATA | PI | COMMENT) chardata?)* ;
+comment        : (POUND | EXCLAMATION) (~TERMINATOR)*;
 
-element      :   startElement endElement
-             |   startElement content endElement
-             |   emptyElement
-             ;
+spaceDecl      : keyNoSpace ( spaceAssignment valueNoAssignment? )? ;
 
-startElement : '<' NAME attribute* '>' ;
+spaceAssignment: WS ;
 
-endElement   : '<' '/' NAME '>' ;
+keyNoSpace     : (
+                  TEXT
+                   | (escapedCharacter)
+                 )
+                 (
+                  EXCLAMATION
+                   | POUND
+                   | (escapedCharacter)
+                   | TEXT 
+                 )*
+               ;
 
-emptyElement : '<' NAME attribute* '/>' ;
+valueNoAssignment : valueTextNoAssignment valueText? (continuation valueText)*
+                     | continuation+ valueNoAssignment ;
 
-reference    :   ENTITY_REF | CHAR_REF ;
+valueTextNoAssignment : (
+                         EXCLAMATION
+                            | POUND
+                            | (escapedCharacter)
+                            | TEXT
+                        )+
+                      ;
 
-attribute    :   NAME '=' STRING ;
+decl           : (
+                  key (
+                    assignment value?
+                     | (continuation WS?)+ assignment value?
+                  )?
+                   | assignment value?
+                 )
+               ;
 
-//
-// All text that is not markup constitutes the character data of the document.
-//
+key            : keyNoSpace WS? ;
 
-chardata     :   TEXT | SEA_WS ;
+assignment     : EQUALS | COLON ;
 
-misc         :   COMMENT | PI | SEA_WS ;
+value          : valueText (continuation (valueText | EOF))*
+                  | continuation+ value ;
+
+valueText      : (
+                  EXCLAMATION
+                   | POUND
+                   | WS
+                   | (escapedCharacter)
+                   | TEXT
+                   | assignment
+                 )+
+               ;
+
+continuation   : BACKSLASH (TERMINATOR | EOF) ;
+
+escapedCharacter : BACKSLASH ~TERMINATOR ;

@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import com.rnveach.tools.checkstyle.extras.internal.AbstractTreeTestSupport;
 
-public class XmlTreeStringPrinterTest extends AbstractTreeTestSupport {
+public class PropertyTreeStringPrinterTest extends AbstractTreeTestSupport {
 
     @Override
     protected String getPackageLocation() {
@@ -32,7 +32,30 @@ public class XmlTreeStringPrinterTest extends AbstractTreeTestSupport {
 
     @Test
     public void testParseFile() throws Exception {
-        verifyXmlAst(getPath("ExpectedXml.txt"), getPath("Input.xml"));
+        verifyPropertyAst(getPath("ExpectedProperty.txt"), getPath("Input.properties"));
+    }
+
+    @Test
+    public void testEmpty() throws Exception {
+        verifyPropertyAst(getPath("ExpectedEmptyProperty.txt"), getPath("InputEmpty.properties"));
+    }
+
+    @Test
+    public void testWhitespace() throws Exception {
+        verifyPropertyAst(getPath("ExpectedWhitespaceProperty.txt"),
+                getPath("InputWhitespace.properties"));
+    }
+
+    @Test
+    public void testComments() throws Exception {
+        verifyPropertyAst(getPath("ExpectedCommentsProperty.txt"),
+                getPath("InputComments.properties"));
+    }
+
+    @Test
+    public void testValueContinuationEnd() throws Exception {
+        verifyPropertyAst(getPath("ExpectedValueContinuationEndProperty.txt"),
+                getPath("InputValueContinuationEnd.properties"));
     }
 
 }
