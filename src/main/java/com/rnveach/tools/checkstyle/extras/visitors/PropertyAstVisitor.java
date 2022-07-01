@@ -122,7 +122,7 @@ public final class PropertyAstVisitor extends AbstractParseTreeVisitor<PropertyA
     @Override
     public PropertyAstImpl visitComment(CommentContext ctx) {
         final PropertyAstImpl ast = createImaginary(PropertyTokenTypes.COMMENT);
-        processChildrenAndCombineText(ast, ctx.children);
+        processChildrenAndCombineRest(ast, ctx.children);
         return ast;
     }
 
@@ -252,8 +252,8 @@ public final class PropertyAstVisitor extends AbstractParseTreeVisitor<PropertyA
     }
 
     /**
-     * Adds all the children from the given ParseTree or JavaParserContext list
-     * to the parent PropertyAstImpl.
+     * Adds all the children from the given ParseTree or
+     * PropertyLanguageParserContext list to the parent PropertyAstImpl.
      *
      * @param parent the PropertyAstImpl to add children to
      * @param children the list of children to add
@@ -277,7 +277,7 @@ public final class PropertyAstVisitor extends AbstractParseTreeVisitor<PropertyA
 
     /**
      * Adds the children and combines various texts from the given ParseTree or
-     * JavaParserContext list to the parent DetailAstImpl.
+     * PropertyLanguageParserContext list to the parent DetailAstImpl.
      *
      * @param parent the PropertyAstImpl to add children to
      * @param children the list of children to add
@@ -315,8 +315,54 @@ public final class PropertyAstVisitor extends AbstractParseTreeVisitor<PropertyA
     }
 
     /**
+     * Adds the children and combines all as text except the first one from the
+     * given ParseTree or PropertyLanguageParserContext list to the parent
+     * DetailAstImpl.
+     *
+     * @param parent the PropertyAstImpl to add children to
+     * @param children the list of children to add
+     */
+    private void processChildrenAndCombineRest(PropertyAstImpl parent,
+            List<? extends ParseTree> children) {
+        boolean first = true;
+        PropertyAstImpl lastNewChild = null;
+
+        for (ParseTree child : children) {
+            final PropertyAstImpl newChild;
+            if (child instanceof TerminalNode) {
+                // Child is a token, create a new PropertyAstImpl and add it
+                // to parent
+                newChild = create((TerminalNode) child);
+            }
+            else {
+                // Child is another rule context; visit it, create token,
+                // and add to parent
+                newChild = visit(child);
+            }
+
+            if (first) {
+                parent.addChild(newChild);
+
+                first = false;
+            }
+            else {
+                if (lastNewChild != null) {
+                    lastNewChild.setText(lastNewChild.getText() + newChild.getText());
+                }
+                else {
+                    lastNewChild = newChild;
+
+                    lastNewChild.setType(PropertyTokenTypes.TEXT);
+                    parent.addChild(lastNewChild);
+                }
+            }
+        }
+    }
+
+    /**
      * Adds the children and combines multiple value texts from the given
-     * ParseTree or JavaParserContext list to the parent DetailAstImpl.
+     * ParseTree or PropertyLanguageParserContext list to the parent
+     * DetailAstImpl.
      *
      * @param parent the PropertyAstImpl to add children to
      * @param children the list of children to add

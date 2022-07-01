@@ -178,8 +178,8 @@ public final class XmlAstVisitor extends AbstractParseTreeVisitor<XmlAstImpl>
     }
 
     /**
-     * Adds all the children from the given ParseTree or JavaParserContext list
-     * to the parent XmlAstImpl.
+     * Adds all the children from the given ParseTree or
+     * XmlLanguageParserContext list to the parent XmlAstImpl.
      *
      * @param parent the XmlAstImpl to add children to
      * @param children the list of children to add
