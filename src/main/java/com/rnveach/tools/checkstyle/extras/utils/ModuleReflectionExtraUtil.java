@@ -20,7 +20,9 @@
 package com.rnveach.tools.checkstyle.extras.utils;
 
 import com.puppycrawl.tools.checkstyle.utils.ModuleReflectionUtil;
+import com.rnveach.tools.checkstyle.extras.checks.AbstractPropertyCheck;
 import com.rnveach.tools.checkstyle.extras.checks.AbstractXmlCheck;
+import com.rnveach.tools.checkstyle.extras.filters.PropertyWalkerFilter;
 import com.rnveach.tools.checkstyle.extras.filters.XmlWalkerFilter;
 
 /**
@@ -42,9 +44,10 @@ public final class ModuleReflectionExtraUtil {
      * @return true if the class may be considered as the checkstyle module.
      */
     public static boolean isCheckstyleModule(Class<?> clazz) {
-        return ModuleReflectionUtil.isCheckstyleModule(clazz)
-                || ModuleReflectionUtil.isValidCheckstyleClass(clazz)
-                        && (isXmlWalkerCheck(clazz) || isXmlWalkerFilterModule(clazz));
+        return ModuleReflectionUtil.isCheckstyleModule(clazz) || ModuleReflectionUtil
+                .isValidCheckstyleClass(clazz)
+                && (isXmlWalkerCheck(clazz) || isXmlWalkerFilterModule(clazz)
+                        || isPropertyWalkerCheck(clazz) || isPropertyWalkerFilterModule(clazz));
     }
 
     /**
@@ -71,4 +74,30 @@ public final class ModuleReflectionExtraUtil {
     public static boolean isXmlWalkerFilterModule(Class<?> clazz) {
         return XmlWalkerFilter.class.isAssignableFrom(clazz);
     }
+
+    /**
+     * Checks whether a class may be considered as the property check which has
+     * PropertyWalker as a parent. Checkstyle's property checks are classes
+     * which implement 'AbstractPropertyCheck' interface.
+     *
+     * @param clazz class to check.
+     * @return true if a class may be considered as the property check.
+     */
+    public static boolean isPropertyWalkerCheck(Class<?> clazz) {
+        return AbstractPropertyCheck.class.isAssignableFrom(clazz);
+    }
+
+    /**
+     * Checks whether a class may be considered as the checkstyle
+     * {@code PropertyWalker} filter. Checkstyle's {@code PropertyWalker}
+     * filters are classes which implement 'PropertyWalkerFilter' interface.
+     *
+     * @param clazz class to check.
+     * @return true if a class may be considered as the checkstyle
+     *         {@code PropertyWalker} filter.
+     */
+    public static boolean isPropertyWalkerFilterModule(Class<?> clazz) {
+        return PropertyWalkerFilter.class.isAssignableFrom(clazz);
+    }
+
 }

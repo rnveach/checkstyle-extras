@@ -1,0 +1,8 @@
+FILE -> FILE [1:0]
+|--TERMINATOR -> \n [1:0]
+|--ROW -> ROW [2:0]
+|   `--WS ->   [2:0]
+|--TERMINATOR -> \n\n [2:1]
+|--ROW -> ROW [4:0]
+|   `--WS -> \t [4:0]
+`--TERMINATOR -> \n\n [4:1]

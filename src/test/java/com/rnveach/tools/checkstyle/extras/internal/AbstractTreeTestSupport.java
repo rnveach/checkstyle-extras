@@ -22,26 +22,29 @@ package com.rnveach.tools.checkstyle.extras.internal;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.File;
-import java.io.IOException;
 
 import com.puppycrawl.tools.checkstyle.AbstractPathTestSupport;
+import com.rnveach.tools.checkstyle.extras.printers.PropertyTreeStringPrinter;
 import com.rnveach.tools.checkstyle.extras.printers.XmlTreeStringPrinter;
 
 public abstract class AbstractTreeTestSupport extends AbstractPathTestSupport {
 
     /**
-     * Returns canonical path for the file with the given file name. The path is
-     * formed base on the non-compilable resources location. This implementation
-     * uses 'src/test/resources-noncompilable/com/puppycrawl/tools/checkstyle/'
-     * as a non-compilable resource location.
+     * Performs verification of the given text ast tree representation.
      *
-     * @param filename file name.
-     * @return canonical path for the file with the given file name.
-     * @throws IOException if I/O exception occurs while forming the path.
+     * @param expectedTextPrintFileName expected text ast tree representation.
+     * @param actualFileName actual text ast tree representation.
+     * @throws Exception if exception occurs during verification.
      */
-    protected final String getNonCompilablePath(String filename) throws IOException {
-        return new File("src/test/resources-noncompilable/" + getPackageLocation() + "/" + filename)
-                .getCanonicalPath();
+    protected static void verifyXmlAst(String expectedTextPrintFileName, String actualFileName)
+            throws Exception {
+        final String expectedContents = readFile(expectedTextPrintFileName);
+
+        final String actualContents = toLfLineEnding(
+                XmlTreeStringPrinter.printFileAst(new File(actualFileName)));
+
+        assertWithMessage("Generated AST from file should match pre-defined AST")
+                .that(actualContents).isEqualTo(expectedContents);
     }
 
     /**
@@ -51,12 +54,12 @@ public abstract class AbstractTreeTestSupport extends AbstractPathTestSupport {
      * @param actualFileName actual text ast tree representation.
      * @throws Exception if exception occurs during verification.
      */
-    protected static void verifyAst(String expectedTextPrintFileName, String actualFileName)
+    protected static void verifyPropertyAst(String expectedTextPrintFileName, String actualFileName)
             throws Exception {
         final String expectedContents = readFile(expectedTextPrintFileName);
 
         final String actualContents = toLfLineEnding(
-                XmlTreeStringPrinter.printFileAst(new File(actualFileName)));
+                PropertyTreeStringPrinter.printFileAst(new File(actualFileName)));
 
         assertWithMessage("Generated AST from file should match pre-defined AST")
                 .that(actualContents).isEqualTo(expectedContents);

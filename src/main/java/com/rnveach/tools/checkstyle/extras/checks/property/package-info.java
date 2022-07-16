@@ -17,22 +17,5 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.rnveach.tools.checkstyle.extras.printers;
-
-import org.junit.jupiter.api.Test;
-
-import com.rnveach.tools.checkstyle.extras.internal.AbstractTreeTestSupport;
-
-public class XmlTreeStringPrinterTest extends AbstractTreeTestSupport {
-
-    @Override
-    protected String getPackageLocation() {
-        return "com/rnveach/tools/checkstyle/extras/printers";
-    }
-
-    @Test
-    public void testParseFile() throws Exception {
-        verifyXmlAst(getPath("ExpectedXml.txt"), getPath("Input.xml"));
-    }
-
-}
+/** Contains the property checks that are bundled with the main distribution. */
+package com.rnveach.tools.checkstyle.extras.checks.property;

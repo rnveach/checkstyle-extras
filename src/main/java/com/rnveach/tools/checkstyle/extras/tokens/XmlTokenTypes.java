@@ -30,6 +30,7 @@ import com.rnveach.tools.checkstyle.extras.grammars.XmlLanguageLexer;
  * </p>
  */
 public final class XmlTokenTypes {
+
     /** Document. */
     public static final int DOCUMENT = XmlLanguageLexer.DOCUMENT;
 
@@ -120,4 +121,5 @@ public final class XmlTokenTypes {
     /** Stop instances being created. **/
     private XmlTokenTypes() {
     }
+
 }

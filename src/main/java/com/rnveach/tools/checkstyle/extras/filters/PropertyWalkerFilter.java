@@ -17,22 +17,21 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.rnveach.tools.checkstyle.extras.printers;
+package com.rnveach.tools.checkstyle.extras.filters;
 
-import org.junit.jupiter.api.Test;
+import com.rnveach.tools.checkstyle.extras.events.PropertyWalkerAuditEvent;
 
-import com.rnveach.tools.checkstyle.extras.internal.AbstractTreeTestSupport;
+/** An interface for filtering {@code PropertyWalkerAuditEvent}. */
+@FunctionalInterface
+public interface PropertyWalkerFilter {
 
-public class XmlTreeStringPrinterTest extends AbstractTreeTestSupport {
-
-    @Override
-    protected String getPackageLocation() {
-        return "com/rnveach/tools/checkstyle/extras/printers";
-    }
-
-    @Test
-    public void testParseFile() throws Exception {
-        verifyXmlAst(getPath("ExpectedXml.txt"), getPath("Input.xml"));
-    }
+    /**
+     * Determines whether or not a filtered {@code PropertyWalkerAuditEvent} is
+     * accepted.
+     *
+     * @param propertyWalkerAuditEvent the PropertyWalkerAuditEvent to filter.
+     * @return true if the event is accepted.
+     */
+    boolean accept(PropertyWalkerAuditEvent propertyWalkerAuditEvent);
 
 }

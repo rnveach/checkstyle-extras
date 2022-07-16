@@ -44,26 +44,26 @@ import com.puppycrawl.tools.checkstyle.api.ExternalResourceHolder;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.FileText;
 import com.puppycrawl.tools.checkstyle.api.Violation;
-import com.rnveach.tools.checkstyle.extras.asts.XmlAST;
-import com.rnveach.tools.checkstyle.extras.checks.AbstractXmlCheck;
-import com.rnveach.tools.checkstyle.extras.events.XmlWalkerAuditEvent;
-import com.rnveach.tools.checkstyle.extras.filters.XmlWalkerFilter;
-import com.rnveach.tools.checkstyle.extras.parsers.XmlParser;
-import com.rnveach.tools.checkstyle.extras.utils.XmlAstUtil;
+import com.rnveach.tools.checkstyle.extras.asts.PropertyAST;
+import com.rnveach.tools.checkstyle.extras.checks.AbstractPropertyCheck;
+import com.rnveach.tools.checkstyle.extras.events.PropertyWalkerAuditEvent;
+import com.rnveach.tools.checkstyle.extras.filters.PropertyWalkerFilter;
+import com.rnveach.tools.checkstyle.extras.parsers.PropertyParser;
+import com.rnveach.tools.checkstyle.extras.utils.PropertyAstUtil;
 
 /**
  * Responsible for walking an AST and notifying interested checks at each node.
  */
-public final class XmlWalker extends AbstractFileSetCheck implements ExternalResourceHolder {
+public final class PropertyWalker extends AbstractFileSetCheck implements ExternalResourceHolder {
 
     /** Maps from token name to ordinary checks. */
-    private final Map<Integer, Set<AbstractXmlCheck>> tokenToOrdinaryChecks = new HashMap<>();
+    private final Map<Integer, Set<AbstractPropertyCheck>> tokenToOrdinaryChecks = new HashMap<>();
 
     /** Registered ordinary checks, that don't use comment nodes. */
-    private final Set<AbstractXmlCheck> ordinaryChecks = createNewCheckSortedSet();
+    private final Set<AbstractPropertyCheck> ordinaryChecks = createNewCheckSortedSet();
 
     /** The ast filters. */
-    private final Set<XmlWalkerFilter> filters = new HashSet<>();
+    private final Set<PropertyWalkerFilter> filters = new HashSet<>();
 
     /** The sorted set of violations. */
     private final SortedSet<Violation> violations = new TreeSet<>();
@@ -75,10 +75,10 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
     private ModuleFactory moduleFactory;
 
     /**
-     * Creates a new {@code XmlWalker} instance.
+     * Creates a new {@code PropertyWalker} instance.
      */
-    public XmlWalker() {
-        setFileExtensions("xml");
+    public PropertyWalker() {
+        setFileExtensions("properties");
     }
 
     /**
@@ -120,17 +120,17 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
             throw new CheckstyleException(
                     "cannot initialize module " + name + " - " + ex.getMessage(), ex);
         }
-        if (module instanceof AbstractXmlCheck) {
-            final AbstractXmlCheck check = (AbstractXmlCheck) module;
+        if (module instanceof AbstractPropertyCheck) {
+            final AbstractPropertyCheck check = (AbstractPropertyCheck) module;
             check.init();
             registerCheck(check);
         }
-        else if (module instanceof XmlWalkerFilter) {
-            final XmlWalkerFilter filter = (XmlWalkerFilter) module;
+        else if (module instanceof PropertyWalkerFilter) {
+            final PropertyWalkerFilter filter = (PropertyWalkerFilter) module;
             filters.add(filter);
         }
         else {
-            throw new CheckstyleException("XmlWalker is not allowed as a parent of " + name
+            throw new CheckstyleException("PropertyWalker is not allowed as a parent of " + name
                     + " Please review 'Parent Module' section for this Check in web"
                     + " documentation if Check is standard.");
         }
@@ -141,7 +141,7 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
         // check if already checked and passed the file
         if (!ordinaryChecks.isEmpty()) {
             final FileContents contents = getFileContents();
-            final XmlAST rootAST = XmlParser.parse(contents);
+            final PropertyAST rootAST = PropertyParser.parse(contents);
             if (!ordinaryChecks.isEmpty()) {
                 walk(rootAST, contents);
             }
@@ -162,16 +162,16 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
      *
      * @param fileName path to the file
      * @param fileContents the contents of the file
-     * @param rootAST root AST element {@link XmlAST} of the file
+     * @param rootAST root AST element {@link PropertyAST} of the file
      * @return filtered set of violations
      */
     private SortedSet<Violation> getFilteredViolations(String fileName, FileContents fileContents,
-            XmlAST rootAST) {
+            PropertyAST rootAST) {
         final SortedSet<Violation> result = new TreeSet<>(violations);
         for (Violation element : violations) {
-            final XmlWalkerAuditEvent event = new XmlWalkerAuditEvent(fileContents, fileName,
-                    element, rootAST);
-            for (XmlWalkerFilter filter : filters) {
+            final PropertyWalkerAuditEvent event = new PropertyWalkerAuditEvent(fileContents,
+                    fileName, element, rootAST);
+            for (PropertyWalkerFilter filter : filters) {
                 if (!filter.accept(event)) {
                     result.remove(element);
                     break;
@@ -187,7 +187,7 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
      * @param check the check to register
      * @throws CheckstyleException if an error occurs
      */
-    private void registerCheck(AbstractXmlCheck check) throws CheckstyleException {
+    private void registerCheck(AbstractPropertyCheck check) throws CheckstyleException {
         final int[] tokens;
         final Set<String> checkTokens = check.getTokenNames();
         if (checkTokens.isEmpty()) {
@@ -200,7 +200,7 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
             final int[] acceptableTokens = check.getAcceptableTokens();
             Arrays.sort(acceptableTokens);
             for (String token : checkTokens) {
-                final int tokenId = XmlAstUtil.getTokenId(token);
+                final int tokenId = PropertyAstUtil.getTokenId(token);
                 if (Arrays.binarySearch(acceptableTokens, tokenId) >= 0) {
                     registerCheck(tokenId, check);
                 }
@@ -225,7 +225,7 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
      * @param tokenId the id of the token
      * @param check the check to register
      */
-    private void registerCheck(int tokenId, AbstractXmlCheck check) {
+    private void registerCheck(int tokenId, AbstractPropertyCheck check) {
         tokenToOrdinaryChecks.computeIfAbsent(tokenId, empty -> createNewCheckSortedSet())
                 .add(check);
     }
@@ -236,7 +236,7 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
      * @param ast the root AST
      * @param contents the contents of the file the AST was generated from.
      */
-    private void walk(XmlAST ast, FileContents contents) {
+    private void walk(PropertyAST ast, FileContents contents) {
         notifyBegin(ast, contents);
         processIter(ast);
         notifyEnd(ast);
@@ -248,10 +248,10 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
      * @param rootAST the root of the tree.
      * @param contents the contents of the file the AST was generated from.
      */
-    private void notifyBegin(XmlAST rootAST, FileContents contents) {
-        final Set<AbstractXmlCheck> checks = ordinaryChecks;
+    private void notifyBegin(PropertyAST rootAST, FileContents contents) {
+        final Set<AbstractPropertyCheck> checks = ordinaryChecks;
 
-        for (AbstractXmlCheck check : checks) {
+        for (AbstractPropertyCheck check : checks) {
             check.setFileContents(contents);
             check.clearViolations();
             check.beginTree(rootAST);
@@ -263,10 +263,10 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
      *
      * @param rootAST the root of the tree.
      */
-    private void notifyEnd(XmlAST rootAST) {
-        final Set<AbstractXmlCheck> checks = ordinaryChecks;
+    private void notifyEnd(PropertyAST rootAST) {
+        final Set<AbstractPropertyCheck> checks = ordinaryChecks;
 
-        for (AbstractXmlCheck check : checks) {
+        for (AbstractPropertyCheck check : checks) {
             check.finishTree(rootAST);
             violations.addAll(check.getViolations());
         }
@@ -277,11 +277,11 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
      *
      * @param ast the node to notify for.
      */
-    private void notifyVisit(XmlAST ast) {
-        final Collection<AbstractXmlCheck> visitors = getListOfChecks(ast);
+    private void notifyVisit(PropertyAST ast) {
+        final Collection<AbstractPropertyCheck> visitors = getListOfChecks(ast);
 
         if (visitors != null) {
-            for (AbstractXmlCheck check : visitors) {
+            for (AbstractPropertyCheck check : visitors) {
                 check.visitToken(ast);
             }
         }
@@ -292,11 +292,11 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
      *
      * @param ast the node to notify for
      */
-    private void notifyLeave(XmlAST ast) {
-        final Collection<AbstractXmlCheck> visitors = getListOfChecks(ast);
+    private void notifyLeave(PropertyAST ast) {
+        final Collection<AbstractPropertyCheck> visitors = getListOfChecks(ast);
 
         if (visitors != null) {
-            for (AbstractXmlCheck check : visitors) {
+            for (AbstractPropertyCheck check : visitors) {
                 check.leaveToken(ast);
             }
         }
@@ -308,16 +308,16 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
      * @param ast the node to notify for
      * @return list of visitors
      */
-    private Collection<AbstractXmlCheck> getListOfChecks(XmlAST ast) {
+    private Collection<AbstractPropertyCheck> getListOfChecks(PropertyAST ast) {
         final int tokenId = ast.getType();
-        final Collection<AbstractXmlCheck> visitors = tokenToOrdinaryChecks.get(tokenId);
+        final Collection<AbstractPropertyCheck> visitors = tokenToOrdinaryChecks.get(tokenId);
 
         return visitors;
     }
 
     @Override
     public void destroy() {
-        ordinaryChecks.forEach(AbstractXmlCheck::destroy);
+        ordinaryChecks.forEach(AbstractPropertyCheck::destroy);
         super.destroy();
     }
 
@@ -336,11 +336,11 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
      *
      * @param root the root of tree for process
      */
-    private void processIter(XmlAST root) {
-        XmlAST curNode = root;
+    private void processIter(PropertyAST root) {
+        PropertyAST curNode = root;
         while (curNode != null) {
             notifyVisit(curNode);
-            XmlAST toVisit = curNode.getFirstChild();
+            PropertyAST toVisit = curNode.getFirstChild();
             while (curNode != null && toVisit == null) {
                 notifyLeave(curNode);
                 toVisit = curNode.getNextSibling();
@@ -356,12 +356,12 @@ public final class XmlWalker extends AbstractFileSetCheck implements ExternalRes
      *
      * @return The new {@link SortedSet}.
      */
-    private static SortedSet<AbstractXmlCheck> createNewCheckSortedSet() {
-        return new TreeSet<>(
-                Comparator.<AbstractXmlCheck, String> comparing(check -> check.getClass().getName())
-                        .thenComparing(AbstractXmlCheck::getId,
-                                Comparator.nullsLast(Comparator.naturalOrder()))
-                        .thenComparing(AbstractXmlCheck::hashCode));
+    private static SortedSet<AbstractPropertyCheck> createNewCheckSortedSet() {
+        return new TreeSet<>(Comparator
+                .<AbstractPropertyCheck, String> comparing(check -> check.getClass().getName())
+                .thenComparing(AbstractPropertyCheck::getId,
+                        Comparator.nullsLast(Comparator.naturalOrder()))
+                .thenComparing(AbstractPropertyCheck::hashCode));
     }
 
 }

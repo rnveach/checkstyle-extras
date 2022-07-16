@@ -24,6 +24,7 @@ import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import com.rnveach.tools.checkstyle.extras.utils.ModuleReflectionExtraUtil;
+import com.rnveach.tools.checkstyle.extras.walkers.PropertyWalker;
 import com.rnveach.tools.checkstyle.extras.walkers.XmlWalker;
 
 public abstract class AbstractExtraModuleTestSupport extends AbstractModuleTestSupport {
@@ -34,6 +35,11 @@ public abstract class AbstractExtraModuleTestSupport extends AbstractModuleTestS
         if (ModuleReflectionExtraUtil.isXmlWalkerCheck(moduleClass)
                 || ModuleReflectionExtraUtil.isXmlWalkerFilterModule(moduleClass)) {
             final Configuration config = createRootConfig(createXmlWalkerConfig(moduleConfig));
+            checker.configure(config);
+        }
+        else if (ModuleReflectionExtraUtil.isPropertyWalkerCheck(moduleClass)
+                || ModuleReflectionExtraUtil.isPropertyWalkerFilterModule(moduleClass)) {
+            final Configuration config = createRootConfig(createPropertyWalkerConfig(moduleConfig));
             checker.configure(config);
         }
         else {
@@ -54,4 +60,19 @@ public abstract class AbstractExtraModuleTestSupport extends AbstractModuleTestS
         xmlConfig.addChild(config);
         return xmlConfig;
     }
+
+    /**
+     * Creates {@link DefaultConfiguration} for the {@link PropertyWalker} based
+     * on the given {@link Configuration} instance.
+     *
+     * @param config {@link Configuration} instance.
+     * @return {@link DefaultConfiguration} for the {@link PropertyWalker} based
+     *         on the given {@link Configuration} instance.
+     */
+    protected static DefaultConfiguration createPropertyWalkerConfig(Configuration config) {
+        final DefaultConfiguration propertyConfig = createModuleConfig(PropertyWalker.class);
+        propertyConfig.addChild(config);
+        return propertyConfig;
+    }
+
 }

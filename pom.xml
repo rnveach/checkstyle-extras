@@ -263,6 +263,7 @@
         <jdepend.skip>true</jdepend.skip>
         <modernizer.skip>true</modernizer.skip>
         <maven.site.skip>true</maven.site.skip>
+        <tidy.skip>true</tidy.skip>
       </properties>
 
       <!-- add provided dependencies to all jar -->

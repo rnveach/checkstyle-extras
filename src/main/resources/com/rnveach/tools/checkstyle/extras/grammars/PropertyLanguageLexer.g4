@@ -17,22 +17,45 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.rnveach.tools.checkstyle.extras.printers;
+lexer grammar PropertyLanguageLexer;
 
-import org.junit.jupiter.api.Test;
-
-import com.rnveach.tools.checkstyle.extras.internal.AbstractTreeTestSupport;
-
-public class XmlTreeStringPrinterTest extends AbstractTreeTestSupport {
-
-    @Override
-    protected String getPackageLocation() {
-        return "com/rnveach/tools/checkstyle/extras/printers";
-    }
-
-    @Test
-    public void testParseFile() throws Exception {
-        verifyXmlAst(getPath("ExpectedXml.txt"), getPath("Input.xml"));
-    }
-
+tokens {
+    // Root of AST
+    FILE,
+    ROW,
+    COMMENT,
+    DECL,
+    KEY,ASSIGNMENT,VALUE,VALUE_TEXT,CONTINUATION,
+    ESCAPED_CHARACTER
 }
+
+@header {
+import com.puppycrawl.tools.checkstyle.grammar.CrAwareLexerSimulator;
+}
+
+@lexer::members {
+    /**
+     * We need to create a different constructor in order to use our
+     * own implementation of the LexerATNSimulator. This is the
+     * reason for the unused 'crAwareConstructor' argument.
+     *
+     * @param input the character stream to tokenize
+     * @param crAwareConstructor dummy parameter
+     */
+    public PropertyLanguageLexer(CharStream input, boolean crAwareConstructor) {
+      super(input);
+      _interp = new CrAwareLexerSimulator(this, _ATN, _decisionToDFA, _sharedContextCache);
+    }
+}
+
+EQUALS         : '=' ;
+COLON          : ':' ;
+BACKSLASH      : '\\' ;
+EXCLAMATION    : '!' ;
+POUND          : '#' ;
+
+WS             : [ \t\f]+ ;
+
+TERMINATOR     : [\r\n]+ ;
+
+TEXT           : ~[=:\\!# \t\f\r\n]+ ;
