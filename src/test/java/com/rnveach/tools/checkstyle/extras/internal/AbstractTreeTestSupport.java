@@ -24,6 +24,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import java.io.File;
 
 import com.puppycrawl.tools.checkstyle.AbstractPathTestSupport;
+import com.rnveach.tools.checkstyle.extras.printers.PropertyTreeStringPrinter;
 import com.rnveach.tools.checkstyle.extras.printers.XmlTreeStringPrinter;
 
 public abstract class AbstractTreeTestSupport extends AbstractPathTestSupport {
@@ -41,6 +42,24 @@ public abstract class AbstractTreeTestSupport extends AbstractPathTestSupport {
 
         final String actualContents = toLfLineEnding(
                 XmlTreeStringPrinter.printFileAst(new File(actualFileName)));
+
+        assertWithMessage("Generated AST from file should match pre-defined AST")
+                .that(actualContents).isEqualTo(expectedContents);
+    }
+
+    /**
+     * Performs verification of the given text ast tree representation.
+     *
+     * @param expectedTextPrintFileName expected text ast tree representation.
+     * @param actualFileName actual text ast tree representation.
+     * @throws Exception if exception occurs during verification.
+     */
+    protected static void verifyPropertyAst(String expectedTextPrintFileName, String actualFileName)
+            throws Exception {
+        final String expectedContents = readFile(expectedTextPrintFileName);
+
+        final String actualContents = toLfLineEnding(
+                PropertyTreeStringPrinter.printFileAst(new File(actualFileName)));
 
         assertWithMessage("Generated AST from file should match pre-defined AST")
                 .that(actualContents).isEqualTo(expectedContents);

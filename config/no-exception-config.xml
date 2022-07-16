@@ -6,6 +6,9 @@
 <module name="Checker">
   <property name="severity" value="ignore" />
 
+  <module name="PropertyWalker">
+  </module>
+
   <module name="XmlWalker">
     <module name="com.rnveach.tools.checkstyle.extras.checks.xml.AttributeNameXmlCheck" />
     <module name="com.rnveach.tools.checkstyle.extras.checks.xml.AttributeOrderXmlCheck" />

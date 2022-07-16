@@ -12,6 +12,35 @@
   <suppress files="[\\/]walkers[\\/]\w+Walker\.java" checks="GenericWhitespace"
     message="'>'" />
 
+  <!-- Tests testing specific items -->
+  <suppress files="[\\/]test[\\/]resources[\\/].*[\\/]printers[\\/]Input.properties"
+    checks="(Ordered|Unique)Properties" />
+  <suppress files="[\\/]test[\\/]resources[\\/].*[\\/]printers[\\/]InputEmpty.properties"
+    checks="NewlineAtEndOfFile" />
+  <suppress files="[\\/]test[\\/]resources[\\/].*[\\/]printers[\\/]InputEmpty.properties"
+    id="noEmptyFile" />
+  <suppress
+    files="[\\/]test[\\/]resources[\\/].*[\\/]printers[\\/]InputIndentation.properties"
+    id="noTrailingWhitespace" />
+  <suppress
+    files="[\\/]test[\\/]resources[\\/].*[\\/]printers[\\/]InputKeysAlone.properties"
+    checks="OrderedProperties" />
+  <suppress
+    files="[\\/]test[\\/]resources[\\/].*[\\/]printers[\\/]InputValueContinuationEnd.properties"
+    checks="NewlineAtEndOfFile" />
+  <suppress
+    files="[\\/]test[\\/]resources[\\/].*[\\/]printers[\\/]InputWhitespace.properties"
+    id="noConsecutiveLines" />
+  <suppress
+    files="[\\/]test[\\/]resources[\\/].*[\\/]printers[\\/]InputWhitespace.properties"
+    id="noEmptyFile" />
+  <suppress
+    files="[\\/]test[\\/]resources[\\/].*[\\/]printers[\\/]InputWhitespace.properties"
+    id="noTrailingWhitespace" />
+  <suppress
+    files="[\\/]test[\\/]resources[\\/].*[\\/]printers[\\/]InputWhitespace.properties"
+    checks="FileTabCharacter" />
+
   <!-- Indentation controlled by Eclipse. -->
   <suppress checks="IndentationCheck" />
   <suppress checks="TrailingComment" />

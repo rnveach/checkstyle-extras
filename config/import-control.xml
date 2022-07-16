@@ -18,6 +18,12 @@
     <allow class="com.rnveach.tools.checkstyle.extras.utils.StringUtil" />
     <allow pkg="com.rnveach.tools.checkstyle.extras.asts" />
 
+    <subpackage name="property">
+      <allow class="com.rnveach.tools.checkstyle.extras.checks.AbstractPropertyCheck" />
+      <allow class="com.rnveach.tools.checkstyle.extras.tokens.PropertyTokenTypes" />
+      <allow class="com.rnveach.tools.checkstyle.extras.utils.PropertyAstUtil" />
+    </subpackage>
+
     <subpackage name="xml">
       <allow class="com.rnveach.tools.checkstyle.extras.checks.AbstractXmlCheck" />
       <allow class="com.rnveach.tools.checkstyle.extras.tokens.XmlTokenTypes" />
