@@ -30,6 +30,7 @@ import com.rnveach.tools.checkstyle.extras.tokens.XmlTokenTypes;
 
 /** Contains utility methods for XML ASTs. */
 public final class XmlAstUtil {
+
     /** Maps from a token name to value. */
     private static final Map<String, Integer> TOKEN_NAME_TO_VALUE;
     /** Maps from a token value to name. */
@@ -154,4 +155,5 @@ public final class XmlAstUtil {
             throw new IllegalStateException(exception);
         }
     }
+
 }

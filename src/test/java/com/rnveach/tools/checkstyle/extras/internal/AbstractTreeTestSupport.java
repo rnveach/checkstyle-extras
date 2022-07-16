@@ -22,27 +22,11 @@ package com.rnveach.tools.checkstyle.extras.internal;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.File;
-import java.io.IOException;
 
 import com.puppycrawl.tools.checkstyle.AbstractPathTestSupport;
 import com.rnveach.tools.checkstyle.extras.printers.XmlTreeStringPrinter;
 
 public abstract class AbstractTreeTestSupport extends AbstractPathTestSupport {
-
-    /**
-     * Returns canonical path for the file with the given file name. The path is
-     * formed base on the non-compilable resources location. This implementation
-     * uses 'src/test/resources-noncompilable/com/puppycrawl/tools/checkstyle/'
-     * as a non-compilable resource location.
-     *
-     * @param filename file name.
-     * @return canonical path for the file with the given file name.
-     * @throws IOException if I/O exception occurs while forming the path.
-     */
-    protected final String getNonCompilablePath(String filename) throws IOException {
-        return new File("src/test/resources-noncompilable/" + getPackageLocation() + "/" + filename)
-                .getCanonicalPath();
-    }
 
     /**
      * Performs verification of the given text ast tree representation.
@@ -51,7 +35,7 @@ public abstract class AbstractTreeTestSupport extends AbstractPathTestSupport {
      * @param actualFileName actual text ast tree representation.
      * @throws Exception if exception occurs during verification.
      */
-    protected static void verifyAst(String expectedTextPrintFileName, String actualFileName)
+    protected static void verifyXmlAst(String expectedTextPrintFileName, String actualFileName)
             throws Exception {
         final String expectedContents = readFile(expectedTextPrintFileName);
 
