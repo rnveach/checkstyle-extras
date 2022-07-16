@@ -40,6 +40,21 @@
   <suppress
     files="[\\/]test[\\/]resources[\\/].*[\\/]printers[\\/]InputWhitespace.properties"
     checks="FileTabCharacter" />
+  <suppress
+    files="[\\/]test[\\/]resources[\\/].*[\\/]property[\\/]InputDuplicateKeyProperty.properties"
+    checks="UniqueProperties" />
+  <suppress
+    files="[\\/]test[\\/]resources[\\/].*[\\/]property[\\/]InputIllegalAssignmentTextProperty.properties"
+    id="noTrailingWhitespace" />
+  <suppress
+    files="[\\/]test[\\/]resources[\\/].*[\\/]property[\\/]InputMissingAssignmentProperty.properties"
+    id="noTrailingWhitespace" />
+  <suppress
+    files="[\\/]test[\\/]resources[\\/].*[\\/]property[\\/]InputMissingValueProperty.properties"
+    id="noTrailingWhitespace" />
+  <suppress
+    files="[\\/]test[\\/]resources[\\/].*[\\/]property[\\/]InputOrderedKeyProperty.properties"
+    checks="OrderedProperties" />
 
   <!-- Indentation controlled by Eclipse. -->
   <suppress checks="IndentationCheck" />

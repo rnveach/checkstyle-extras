@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.rnveach.tools.checkstyle.extras.asts.PropertyAST;
 import com.rnveach.tools.checkstyle.extras.tokens.PropertyTokenTypes;
 
 /** Contains utility methods for property ASTs. */
@@ -154,6 +155,27 @@ public final class PropertyAstUtil {
         catch (final IllegalAccessException exception) {
             throw new IllegalStateException(exception);
         }
+    }
+
+    /**
+     * Converts the given {@code parent} into a {@link String}.
+     *
+     * @param parent The AST to convert.
+     * @return The {@link String} presentation.
+     */
+    public static String getStringFromAst(PropertyAST parent) {
+        String result = "";
+
+        for (PropertyAST ast = parent.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
+            if (ast.getFirstChild() != null) {
+                result += getStringFromAst(ast);
+            }
+            else {
+                result += ast.getText();
+            }
+        }
+
+        return result;
     }
 
 }

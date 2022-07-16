@@ -7,6 +7,16 @@
   <property name="severity" value="ignore" />
 
   <module name="PropertyWalker">
+    <module
+      name="com.rnveach.tools.checkstyle.extras.checks.property.IllegalAssignmentTextPropertyCheck" />
+    <module
+      name="com.rnveach.tools.checkstyle.extras.checks.property.IllegalTokenPropertyCheck" />
+    <module
+      name="com.rnveach.tools.checkstyle.extras.checks.property.IllegalTokenTextPropertyCheck" />
+    <module
+      name="com.rnveach.tools.checkstyle.extras.checks.property.MissingAssignmentPropertyCheck" />
+    <module
+      name="com.rnveach.tools.checkstyle.extras.checks.property.MissingValuePropertyCheck" />
   </module>
 
   <module name="XmlWalker">
