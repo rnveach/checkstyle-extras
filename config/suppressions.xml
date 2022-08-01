@@ -47,6 +47,9 @@
     files="[\\/]test[\\/]resources[\\/].*[\\/]property[\\/]InputIllegalAssignmentTextProperty.properties"
     id="noTrailingWhitespace" />
   <suppress
+    files="[\\/]test[\\/]resources[\\/].*[\\/]property[\\/]InputIndentationPropertyCompletelyBad.properties"
+    id="noTrailingWhitespace" />
+  <suppress
     files="[\\/]test[\\/]resources[\\/].*[\\/]property[\\/]InputMissingAssignmentProperty.properties"
     id="noTrailingWhitespace" />
   <suppress
